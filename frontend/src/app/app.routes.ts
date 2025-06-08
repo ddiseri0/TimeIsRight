@@ -1,6 +1,12 @@
 import {Routes} from '@angular/router';
 
 export const routes: Routes = [
-  // per ora lasciamo vuoto, o aggiungi qui future lazy routes:
-  // { path: 'calculator', loadComponent: () => import('./features/calculator/...').then(m => m.CalculatorFormComponent) },
+  {
+    path: 'calculator',
+    loadChildren: () =>
+      import('./features/calculator/calculator-module')
+        .then(m => m.CalculatorModule)
+  },
+  {path: '', redirectTo: 'calculator', pathMatch: 'full'},
+  {path: '**', redirectTo: 'calculator'},
 ];

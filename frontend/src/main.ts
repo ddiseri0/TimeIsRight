@@ -13,6 +13,8 @@ import {MatCardModule} from '@angular/material/card';
 // ... altri moduli Material
 import {App} from './app/app';
 import {routes} from './app/app.routes';
+import {CoreModule} from './app/core/core-module';
+import {SharedModule} from './app/shared/shared-module';
 
 bootstrapApplication(App, {
   providers: [
@@ -26,6 +28,8 @@ bootstrapApplication(App, {
       MatFormFieldModule,
       MatInputModule,
       MatCardModule,
+      CoreModule,
+      SharedModule
     )
   ]
 })
