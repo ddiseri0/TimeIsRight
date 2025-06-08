@@ -1,0 +1,34 @@
+# === NODE MODULES ===
+/frontend/node_modules/
+
+# === ANGULAR OUTPUT ===
+/frontend/dist/
+/frontend/out-tsc/
+/frontend/.angular/cache/
+
+# === SYSTEM FILES ===
+.DS_Store
+Thumbs.db
+
+# === ENVIRONMENT CONFIGS ===
+*.env
+*.local
+.env.*
+
+# === LOG FILES ===
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# === IDE / EDITOR CONFIGS ===
+.vscode/
+.cursor/
+
+# === OPTIONAL: OS-specific ===
+# macOS
+*.DS_Store
+
+# Windows
+ehthumbs.db
+Icon?
+desktop.ini
