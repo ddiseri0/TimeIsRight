@@ -1,25 +1,48 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
-@Injectable({providedIn: 'root'})
+@Injectable({
+  providedIn: 'root'
+})
 export class CalculationService {
+
+  constructor() { }
+
   /**
-   * Restituisce quante ore di lavoro servono per guadagnare 1 € netto.
-   * Se net <= 0, torna 0 per evitare divisione infinita/negativa.
+   * Calculates how many hours of work are needed to earn 1 Euro net.
+   * @param hourlyWage Net hourly wage in Euros.
+   * @param fixedExpenses Monthly fixed expenses in Euros (optional).
+   * @param hoursPerMonth Total working hours per month (optional, default 160).
+   * @returns Hours needed to earn 1 Euro.
    */
-  computeHoursPerEuro(
-    salary: number,
-    monthlyHours: number,
-    fixedExpenses: number
-  ): number {
-    const net = salary - fixedExpenses;
-    return net > 0 ? monthlyHours / net : 0;
+  computeHoursPerEuro(hourlyWage: number, fixedExpenses: number = 0, hoursPerMonth: number = 160): number {
+    if (hourlyWage <= 0) {
+      throw new Error('Hourly wage must be greater than zero.');
+    }
+
+    // Calculate effective hourly wage after expenses
+    // Expenses are spread over the working hours
+    const expensesPerHour = fixedExpenses / hoursPerMonth;
+    const effectiveHourlyWage = hourlyWage - expensesPerHour;
+
+    if (effectiveHourlyWage <= 0) {
+      // If expenses exceed income, it's impossible to afford anything
+      // Return Infinity or throw error? Let's return Infinity for now to indicate "never".
+      return Infinity;
+    }
+
+    return 1 / effectiveHourlyWage;
   }
 
   /**
-   * Calcola il costo in ore di un item, dato il prezzo e
-   * il rapporto ore-per-euro già calcolato.
+   * Calculates the cost of an item in working hours.
+   * @param hoursPerEuro Hours needed to earn 1 Euro.
+   * @param itemPrice Price of the item in Euros.
+   * @returns Total hours of work needed.
    */
-  computeCostInHours(price: number, hoursPerEuro: number): number {
-    return price * hoursPerEuro;
+  computeCostInHours(hoursPerEuro: number, itemPrice: number): number {
+    if (hoursPerEuro < 0 || itemPrice < 0) {
+      throw new Error('Values must be non-negative.');
+    }
+    return hoursPerEuro * itemPrice;
   }
 }

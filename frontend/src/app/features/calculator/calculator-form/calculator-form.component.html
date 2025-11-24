@@ -1,0 +1,63 @@
+<div class="calculator-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Time Cost Calculator</mat-card-title>
+      <mat-card-subtitle>Find out how much time you really pay</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="calculatorForm" (ngSubmit)="calculate()">
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Hourly Wage (€)</mat-label>
+            <input matInput type="number" formControlName="hourlyWage" placeholder="e.g. 15">
+            <mat-error *ngIf="calculatorForm.get('hourlyWage')?.hasError('required')">Required</mat-error>
+            <mat-error *ngIf="calculatorForm.get('hourlyWage')?.hasError('min')">Must be > 0</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+             <mat-label>Monthly Expenses (€)</mat-label>
+             <input matInput type="number" formControlName="fixedExpenses" placeholder="e.g. 800">
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+           <mat-form-field appearance="outline">
+              <mat-label>Hours Worked / Month</mat-label>
+              <input matInput type="number" formControlName="hoursPerMonth" placeholder="e.g. 160">
+           </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Item Price (€)</mat-label>
+            <input matInput type="number" formControlName="itemPrice" placeholder="e.g. 50">
+            <mat-error *ngIf="calculatorForm.get('itemPrice')?.hasError('required')">Required</mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="actions">
+          <button mat-flat-button color="primary" type="submit" [disabled]="!calculatorForm.valid">
+            Calculate
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card *ngIf="resultHours !== null" class="result-card">
+    <mat-card-content>
+      <div class="result-content">
+        <h3>Cost in Time</h3>
+        <div class="result-value" *ngIf="resultHours !== Infinity; else impossible">
+           {{ resultHours | number:'1.1-2' }} Hours
+        </div>
+        <ng-template #impossible>
+           <div class="result-value error">Impossible (Expenses > Income)</div>
+        </ng-template>
+        <p class="hint" *ngIf="hoursPerEuro && resultHours !== Infinity">
+          You work {{ hoursPerEuro | number:'1.2-2' }} hours for every 1€ net.
+        </p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
